@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
@@ -6,15 +7,35 @@ public class PlayerController : MonoBehaviour
     private float turnSpeed = 45.0f;
     private float horizontalInput;
     private float forwardInput;
+    private bool isGrounded = true;
+    private Rigidbody rb;
+    private float jumpForce = 5000.0f;
+    private bool jumpPressed = false;  
     void Start()
     {
+rb = GetComponent<Rigidbody>();
+    }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {    
+            isGrounded = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // We'll move the vehicle forward
+        //Move the vehicle forward
         horizontalInput = Input.GetAxis("Horizontal");
         forwardInput = Input.GetAxis("Vertical");
         // Moves the car forward based on vertical input
@@ -22,6 +43,23 @@ public class PlayerController : MonoBehaviour
         //Rotates the car based on horizontal input
         transform.Rotate(Vector3.up, turnSpeed * horizontalInput * Time.deltaTime);
         
+        //Detect jump
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpPressed = true;
+        }
+      
+    }
 
+    private void FixedUpdate()
+    {
+        //make car jump
+        if (isGrounded && jumpPressed)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+            jumpPressed = false;
+        }
+        {}
     }
 }
