@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+
 public class PlayerController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -10,10 +11,15 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded = true;
     private Rigidbody rb;
     private float jumpForce = 5000.0f;
-    private bool jumpPressed = false;  
+    private bool jumpPressed = false;
+    private Vector3 startPosition = new Vector3(-0.32f, -0.13f, 5.39f);
+    private Quaternion startRotation;
+
     void Start()
     {
-rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        startPosition = transform.position;
+        startRotation = transform.rotation;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -27,7 +33,7 @@ rb = GetComponent<Rigidbody>();
     void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-        {    
+        {
             isGrounded = false;
         }
     }
@@ -42,16 +48,32 @@ rb = GetComponent<Rigidbody>();
         transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
         //Rotates the car based on horizontal input
         transform.Rotate(Vector3.up, turnSpeed * horizontalInput * Time.deltaTime);
-        
+
+        //Detect if the car fell off the road
+        if (transform.position.y < -3f)
+        {
+            Respawn();
+        }
         //Detect jump
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumpPressed = true;
         }
-      
     }
 
-    private void FixedUpdate()
+    void Respawn()
+    {
+        if (rb != null)
+        {
+           rb.linearVelocity = Vector3.zero;
+           rb.angularVelocity = Vector3.zero;
+        }
+        
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+    }
+
+    void FixedUpdate()
     {
         //make car jump
         if (isGrounded && jumpPressed)
@@ -60,6 +82,5 @@ rb = GetComponent<Rigidbody>();
             isGrounded = false;
             jumpPressed = false;
         }
-        {}
     }
 }
