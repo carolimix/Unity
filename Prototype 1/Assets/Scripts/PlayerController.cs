@@ -28,7 +28,14 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+
+        //obstacles destroyed on collision
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(collision.gameObject);
+        }
     }
+    
 
     void OnCollisionExit(Collision collision)
     {
