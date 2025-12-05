@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 10.0f;
     public float xRange = 10.0f;
     public GameObject projectilePrefab;
-    public bool GameOver { get; set; } //Propertie
+    public bool GameOver { get; set; } //Property
     
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         scoreText.text = "Score: 0";
-        gameOverText.gameObject.SetActive(false);
+        gameOverText.gameObject.SetActive(false); //setActive from Propertie
         
     }
 

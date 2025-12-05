@@ -13,7 +13,7 @@ public class MoveForward : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerController.GameOver) return; //stops movement when gameOber is true
+        if (playerController.GameOver) return; // Using the GameOver Property to stop moving the animals when the game ends
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
         
     }
