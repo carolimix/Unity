@@ -30,6 +30,7 @@ public class DestroyOutOfBounds : MonoBehaviour
 
             if (animalsPasses > maxAllowed && !playerController.GameOver)
             {
+                //Using the GameOver Property to set the game state to over
                 playerController.GameOver = true;
                 playerController.gameOverText.gameObject.SetActive(true); //activates game over text
                 Debug.Log("Game Over: Too many animals have escaped");
